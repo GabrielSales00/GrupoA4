@@ -5,6 +5,7 @@ import dataBaseReference.System.Controller;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.math.BigDecimal;
 
 
 // The OrderMenu class extends the MenuFuncs class and implements an order menu.
@@ -22,7 +23,7 @@ public class OrderMenu extends MenuFuncs {
 
     // Method to display the order menu and handle selected options.
     @Override
-    public void showMenu() throws SQLException {
+    public void showMenu() {
 
         System.out.println("\nOrders actions:");
 
@@ -34,19 +35,28 @@ public class OrderMenu extends MenuFuncs {
             case 1: // Add a new order to a client
                 System.out.println("\n--ADDING NEW ORDER TO CLIENT--\n");
 
-                currentDB.insertOrder();
+                int id = askInt("Insert Id:");
+
+                int orderNum = askInt("Order number: ");
+
+                BigDecimal orderPrice = askBigDecimal("Order price: ");
+
+                String description = askString("Order desciption: ");
+
+                currentDB.insertOrder(id, orderNum, orderPrice, description);
 
                 break;
 
             case 2: // Get an order by number
                 System.out.println("\n--GET ORDER BY NUMBER--\n");
-
-                currentDB.insertOrderByNumber();
+                int number = askInt("Enter order number to search");
+                currentDB.insertOrderByNumber(number);
                 break;
 
             case 3:  // Delete an order
                 System.out.println("\n--DELETING ORDER--\n");
-                currentDB.deleteOrder();
+                int num = askInt("Enter order number to delete: ");
+                currentDB.deleteOrder(num);
                 break;
         }
         if (option != 4) { // Exit

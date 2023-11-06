@@ -4,19 +4,20 @@ import dataBaseReference.DAO.AbstractCustomerDAO;
 import dataBaseReference.DAO.AbstractOrderDAO;
 import dataBaseReference.DTO.Customer;
 import dataBaseReference.DTO.Orders;
+import dataBaseReference.System.Controller;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ReportMenu extends MenuFuncs {
-        private final AbstractCustomerDAO customerDAO;
-        private final AbstractOrderDAO orderDAO;
-    
-        public ReportMenu(AbstractCustomerDAO abstractCustomerDAO, AbstractOrderDAO abstractOrderDAO) {
-            this.customerDAO = abstractCustomerDAO;
-            this.orderDAO = abstractOrderDAO;
+public class ReportMenu extends MenuFuncs {  
+
+        public Controller currentDB;
+
+        public ReportMenu(Controller controller) {
+
+            currentDB = controller;
     
             optionsMenu = new ArrayList<>();
             optionsMenu.add("1 - Clientes ordenados por identificador");
@@ -28,7 +29,7 @@ public class ReportMenu extends MenuFuncs {
     
         // Método para exibir o menu de relatórios e lidar com as opções selecionadas.
         @Override
-        public void showMenu() throws SQLException{
+        public void showMenu() {
             System.out.println("\nAções de relatórios:");
     
             showOptions();
@@ -37,22 +38,13 @@ public class ReportMenu extends MenuFuncs {
     
             switch (option) {
                 case 1:
-                    List<Customer> customers = customerDAO.getCostumersSortedById();
-                    for (Customer customer : customers) {
-                        System.out.println(customer);
-                    }
+                    currentDB.requestAllCustomersById();
                     break;
                 case 2:
-                    List<Customer> customers = customerDAO.getAllCustomersOrderedByName();
-                    for (Customer customer : customers) {
-                        System.out.println(customer);
-                    }
+                    currentDB.requestCustomerByName();
                     break;
                 case 3:
-                    List<Orders> orders = orderDAO.getOrderByNumber();
-                    for (Orders order : orders) {
-                        System.out.println(order);
-                    }
+                    currentDB.req
                     break;
                 case 4 :
                     List<Customer> customers = customerDAO.getAllSortedByName();

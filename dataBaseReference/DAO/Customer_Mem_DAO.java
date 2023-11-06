@@ -1,7 +1,11 @@
 package dataBaseReference.DAO;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,6 +22,18 @@ public class Customer_Mem_DAO extends AbstractCustomerDAO
       super();
       this.databaseRef = databaseRef;
       }
+
+   @Override
+   public List<Customer> getAllCustomersOrderedById() throws SQLException {
+	   List<Customer> customers = databaseRef.getCustomerList();
+	   Collections.sort(customers, new Comparator<Customer>() {
+		   @Override
+		   public int compare(Customer customer1, Customer customer2) {
+			   return Integer.compare(customer1.getId(), customer2.getId());
+		   }
+	   });
+	   return customers;
+   }
 
    @Override
    public List<Customer> getAllCustomersOrderedByName() throws SQLException
@@ -43,6 +59,7 @@ public class Customer_Mem_DAO extends AbstractCustomerDAO
          }
       return customer;
       }
+
 
    @Override
    public void addCustomer(Customer customer) throws SQLException

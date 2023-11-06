@@ -5,6 +5,7 @@ import java.security.InvalidParameterException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 import dataBaseReference.DAO.AbstractCustomerDAO;
 import dataBaseReference.DAO.AbstractOrderDAO;
@@ -20,6 +21,7 @@ import dataBaseReference.Menu.MenuFuncs;
 
 public class Controller
    {
+   public Scanner scanner = new Scanner(System.in);
    public AbstractCustomerDAO customerDAO        = null;
    public AbstractOrderDAO    ordersDAO          = null;
    private MariaDBConnection   myDBConnection     = null;
@@ -79,61 +81,82 @@ public class Controller
       }
    
       //arrumar
-   public void insertOrder(int id) {
-      Customer customer = customerDAO.getCustomerById(id);
+   public void insertOrder(int id, int orderNumber, BigDecimal orderPrice, String Description) {
+      try {
+         Customer customer = customerDAO.getCustomerById(id);
                 
-      if (customer != null) {
-          Orders order = new Orders();
-          order.setCustomerId(customer.getId());
-          
-          order.setNumber(askInt("Order number: " + getBetweenText()));
-          order.setPrice(askBigDecimal("Order price: "));
-          order.setDescription(askString("Order desciption: "));
+         if (customer != null) {
+               Orders order = new Orders();
+               order.setCustomerId(customer.getId());
+            
+               
+               order.setNumber(orderNumber);
+               order.setPrice(orderPrice);
+               order.setDescription(Description);
 
-          ordersDAO.addOrder(order);
-      } else {
-         System.out.println("ERROR: No match found");
-      }
-   }
+               ordersDAO.addOrder(order);
 
-   public void deleteOrder() {
-      Orders order = ordersDAO.getOrderByNumber(askInt("Enter order number to delete: "));
-
-      if (order != null) {
-          ordersDAO.deleteOrder(order.getNumber());
-      } else {
-         System.out.println("ERROR: No match found");
-      }
-   }
-
-   public void insertOrderByNumber() {
-      Orders order = ordersDAO.getOrderByNumber(askInt("Enter order number to search" + getBetweenText()));
-      if (order != null) {
-         Customer customer = customerDAO.getCustomerById(order.getCustomerId());
-         System.out.println("Customer: \n-Id: " + customer.getId() + "\n-Name: " + customer.getName() + "\n-Order: \n" + order);
-      } else {
-         System.out.println("ERROR: No match found");
-      }
-   }
-
-   public void insertCustomer()
-      {
-      try
-         {
-            Customer customer = new Customer();
-            customer.setId(askInt("Customer ID" + getBetweenText()));
-            customer.setName(askString("Customer NAME: "));
-            customer.setCity(askString("Customer CITY: "));
-            customer.setState(askString("Customer STATE: "));
+         } else {
+            System.out.println("ERROR: No match found");
          }
-      catch (SQLException e)
-         {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
-         }
-
-      System.out.println("Random customers and orders created successfully!");
       }
+      catch (SQLException e) {
+         System.out.println("Exception launched. Program aborted.");
+         System.out.println(e.getMessage());
+         System.exit(1);
+      }
+
+   }
+
+   public void deleteOrder(int number) {
+      try {
+         Orders order = ordersDAO.getOrderByNumber(number);
+
+         if (order != null) {
+               ordersDAO.deleteOrder(order.getNumber());
+         } else {
+            System.out.println("ERROR: No match found");
+         }
+      }
+      catch (SQLException e) {
+         System.out.println("Exception launched. Program aborted.");
+         System.out.println(e.getMessage());
+         System.exit(1);
+      }
+   }
+
+   public void insertOrderByNumber(int number) {
+      try {
+         Orders order = ordersDAO.getOrderByNumber(number);
+         if (order != null) {
+            Customer customer = customerDAO.getCustomerById(order.getCustomerId());
+            System.out.println("Customer: \n-Id: " + customer.getId() + "\n-Name: " + customer.getName() + "\n-Order: \n" + order);
+         } else {
+            System.out.println("ERROR: No match found");
+         }
+      } 
+      catch (SQLException e) {
+         System.out.println("Exception launched. Program aborted.");
+         System.out.println(e.getMessage());
+         System.exit(1);
+      }
+
+   }
+   public void insertCustomer(int id, String Name, String City, String State) {
+      try {
+         Customer customer = new Customer();
+         customer.setId(id);
+         customer.setName(Name);
+         customer.setCity(City);
+         customer.setState(State);
+         customerDAO.addCustomer(customer);
+      }
+      catch (SQLException e) {
+         System.out.println("Exception launched. Program aborted.");
+         System.out.println(e.getMessage());
+         System.exit(1);
+      }
+   }
 
    public void requestCustomerByID(int Id) {
       try
@@ -142,9 +165,9 @@ public class Controller
          Customer customer = customerDAO.getCustomerById(customerId);
          if (customer != null)
             {
-            System.out.println("Customer Name: " + customer.getName());
-            System.out.println("City: " + customer.getCity());
-            System.out.println("State: " + customer.getState());
+               System.out.println("Customer Name: " + customer.getName());
+               System.out.println("City: " + customer.getCity());
+               System.out.println("State: " + customer.getState());
             }
          else
             {
@@ -158,7 +181,8 @@ public class Controller
    }
 
    public void requestCustomerByName () {
-      List<Customer> customers = customerDAO.getAllCustomersOrderedByName();
+      try {
+         List<Customer> customers = customerDAO.getAllCustomersOrderedByName();
          if (!customers.isEmpty()) {
             System.out.println("Customers: \n");
             for (Customer customer1 : customers) {
@@ -167,6 +191,26 @@ public class Controller
          } else {
             System.out.println("Match not found.");
          }
+      }
+      catch (SQLException e) {
+         System.out.println("Exception launched. Program aborted.");
+         System.out.println(e.getMessage());
+         System.exit(1);
+      }
+   }
+
+   public void requestAllCustomersById () {
+      try {
+         List<Customer> customers = customerDAO.getAllCustomersOrderedById();
+         for (Customer customer : customers) {
+             System.out.println(customer);
+         }
+      }
+      catch (SQLException e) {
+         System.out.println("Exception launched. Program aborted.");
+         System.out.println(e.getMessage());
+         System.exit(1);
+      }
    }
 
    public void deleteCustomerByID(int id) {
@@ -202,6 +246,9 @@ public class Controller
    }
 
 
+   public void requestAllOrdersByNumber() {
+      
+   }
 
 
    private void updateData()

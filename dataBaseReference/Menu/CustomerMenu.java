@@ -39,14 +39,17 @@ public class CustomerMenu extends MenuFuncs {
             case 1: //Insert new costumer
 
                 System.out.println("\n--INSERTING NEW CUSTOMER--\n");
-
-                currentDB.insertCustomer();
+                int id = askInt("Id to be added:");
+                String name = askString("Name to be added:");
+                String city = askString("City:");
+                String state = askString("State:");
+                currentDB.insertCustomer(id, name, city, state);
                 break;
 
             case 2: //Get costumer by ID
                 System.out.println("\n--GET CUSTOMER BY ID--\n");
 
-                currentDB.requestCustomerByID(askInt("Customer ID:" + getBetweenText()));
+                currentDB.requestCustomerByID(askInt("Customer ID:"));
 
                 break;
 

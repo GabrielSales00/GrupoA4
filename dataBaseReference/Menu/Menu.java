@@ -55,7 +55,7 @@ public class Menu extends MenuFuncs {
                 this.showMenu();
                 break;
             case 2:
-              	// new OrderMenu(this.controller).showMenu();
+              	new OrderMenu(this.controller).showMenu();
                 this.showMenu();
                 break;
             case 3:
