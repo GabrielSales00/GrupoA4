@@ -19,11 +19,19 @@ import dataBaseReference.RDBMS.MemoryDBConnection;
 
 public class Controller
    {
-   private AbstractCustomerDAO customerDAO        = null;
-   private AbstractOrderDAO    ordersDAO          = null;
+   public AbstractCustomerDAO customerDAO        = null;
+   public AbstractOrderDAO    ordersDAO          = null;
    private MariaDBConnection   myDBConnection     = null;
    private MemoryDBConnection  memoryDBConnection = null;
-   private DataBaseType        selectedDataBase   = DataBaseType.INVALID;
+   public DataBaseType        selectedDataBase   = DataBaseType.INVALID;
+
+   public AbstractCustomerDAO getCustomerDAO (){
+      return customerDAO;
+   }
+
+   public AbstractOrderDAO getOrdersDAO() {
+      return ordersDAO;
+   }
 
    public Controller(DataBaseType selectedDataBase)
       {
@@ -31,7 +39,7 @@ public class Controller
       this.selectedDataBase = selectedDataBase;
       }
 
-   private void openConnection()
+   public void openConnection()
       {
       switch (selectedDataBase)
          {
@@ -80,8 +88,9 @@ public class Controller
       requestData();
       closeConnection();
       }
+   
 
-   private void insertData()
+   public void insertData()
       {
       System.out.println("Create 4 random customers");
       try

@@ -1,24 +1,25 @@
-package Grupoa4.DTO;
+package dataBaseReference.DTO;
 
+public class Customer implements Comparable<Customer>
+   {
+   private int    id;
+   private String name;
+   private String city;
+   private String state;
 
-//Implements Comparable enables the sorting of elements in arrays
-public class Customer implements Comparable<Customer> {
-    private int id;
-    private String name;
-    private String city;
-    private String state;
+   public Customer()
+      {
+      super();
+      }
 
-    public Customer() {
-        super();
-    }
-
-    public Customer(int id, String name, String city, String state) {
-        super();
-        this.id = id;
-        this.name = name;
-        this.city = city;
-        this.state = state;
-    }
+   public Customer(int id, String name, String city, String state)
+      {
+      super();
+      this.id    = id;
+      this.name  = name;
+      this.city  = city;
+      this.state = state;
+      }
 
    public final int getId()
       {
@@ -72,4 +73,4 @@ public class Customer implements Comparable<Customer> {
       return (this.name.compareTo(other.name));
       }
 
-}
+   }

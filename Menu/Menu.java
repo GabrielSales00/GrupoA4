@@ -1,66 +1,74 @@
-package GrupoA4.Menu;
+package dataBaseReference.Menu;
 
 import java.util.*;
-import Menu.CustomerMenu;
+import dataBaseReference.System.*;
+
+
 
 public class Menu {
-    public static void main(String[] args) {
-        showWelcomeMessage();
+    private Scanner scanner;
+    public Controller controller;
 
-        boolean keepExc= true;
-        Scanner scanner = new Scanner(System.in);
+    public Menu() {
+        scanner = new Scanner(System.in);
+    }
 
-        while (keepExc) {
-            showMainMenu();
-            int option= scanner.nextInt();
+    public void selectDB() {
+        System.out.println("Please choose one of the following types of connection:");
+        System.out.println("1. Local DB");
+        System.out.println("2. MariaDB");
 
-            switch (option) {
-                case 1:
-                    // Customers
-                    CustomerMenu customermenu = new CustomerMenu();
-                    customermenu.showMenu();
-                case 2:
-                    // Orders
-                    OrderMenu order = new OrderMenu();
-                    order.showMenu();
-                case 3:
-                    // Reports
-                    ReportMenu reportmenu = new ReportMenu();
-                    reportmenu.showMenu();
-                case 4:
-                    // Informations
-                    InformationsMenu infomenu = new InformationsMenu();
-                    infomenu.showMenu();
-                case 5:
-                    keepExc = false;
-                    break;
-                default:
-                    System.out.println("Invalid option");
-                    break;
-            }
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (choice) {
+            case 1:
+                this.controller = new Controller(DataBaseType.MEMORY);
+                break;
+            case 2:
+                this.controller = new Controller(DataBaseType.MARIADB);
+                break;
+            default:
+                System.out.println("\nThat's no good. Please choose either 1 or 2");
+                selectDB();
         }
-
-        showGoodbyeMessage();
+        this.controller.openConnection();
+        showMenu();
     }
 
-    public static void showWelcomeMessage() {
-        System.out.println("Welcome!");
-        System.out.println("This is a Java program designed to manage a MariaDB database on a remote Linux server, performing CRUD operations.");
-        System.out.println("Version: 1.0");
-        System.out.println("Updated in: ");
-    }
-
-    public static void showMainMenu() {
-        System.out.println("\nMain Menu:");
-        System.out.println("1. Customers");
-        System.out.println("2. Orders");
-        System.out.println("3. Reports");
-        System.out.println("4. Informations");
+    public void showMenu() {
+        System.out.println("Menu:");
+        System.out.println("1. Customer Menu");        
+        System.out.println("2. Order Menu");                   
+        System.out.println("3. Reports Menu");                      
+        System.out.println("4. Information Menu");                    
         System.out.println("5. Exit");
-        System.out.print("Choose option: ");
-    }
 
-    public static void showGoodbyeMessage() {
-        System.out.println("Finished");
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (choice) {
+            case 1:
+            	new CustomerMenu(this.controller.getCustomerDAO(), this.controller.getOrdersDAO()).showMenu();
+                this.showMenu();
+                break;
+            case 2:
+              	new OrderMenu(controller.getCustomerDAO(),controller.getOrdersDAO()).showMenu();
+                this.showMenu();
+                break;
+            case 3:
+            	new ReportMenu(this.controller.getCustomerDAO(), this.controller.getOrdersDAO()).showMenu();
+                this.showMenu();
+                break;
+            case 4:
+            	new InfoMenu().showMenu();
+                this.showMenu();
+                break;
+            case 5:
+                break;
+            default:
+                System.err.println("\nInvalid option. Please try again.");
+                showMenu();
+        }
     }
 }

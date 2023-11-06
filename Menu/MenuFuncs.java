@@ -1,6 +1,9 @@
-package GrupoA4.Menu;
+package dataBaseReference.Menu;
 
-import DAO.*;
+import dataBaseReference.DAO.AbstractCustomerDAO;
+import dataBaseReference.DAO.AbstractOrderDAO;
+import dataBaseReference.DTO.Customer;
+import dataBaseReference.DTO.Orders;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;

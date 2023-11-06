@@ -1,9 +1,9 @@
-package GrupoA4.Menu;
+package dataBaseReference.Menu;
 
-import DAO.AbstractCustomerDAO;
-import DAO.AbstractOrderDAO;
-import DTO.Customer;
-import DTO.Order;
+import dataBaseReference.DAO.AbstractCustomerDAO;
+import dataBaseReference.DAO.AbstractOrderDAO;
+import dataBaseReference.DTO.Customer;
+import dataBaseReference.DTO.Orders;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -30,16 +30,17 @@ public class CustomerMenu extends MenuFuncs {
 
     // Method to display the customer menu and handle selected options.
     @Override
-    public void showMenu() throws SQLException {
+    public void showMenu() {
 
         System.out.println("\nCustomer Actions:");
 
         showOptions();
         int option = askOption();
         
+        Customer customer = new Customer();
+        
         switch (option) {
-            case 1 -> { //Insert new costumer
-                Customer customer = new Customer();
+            case 1: //Insert new costumer
 
                 System.out.println("\n--INSERTING NEW CUSTOMER--\n");
 
@@ -48,69 +49,69 @@ public class CustomerMenu extends MenuFuncs {
                 customer.setCity(askString("Customer CITY: "));
                 customer.setState(askString("Customer STATE: "));
 
-                customerDAO.add(customer);
-            }
-            case 2 -> { //Get costumer by ID
+                customerDAO.addCustomer(customer);
+                break;
+
+            case 2: //Get costumer by ID
                 System.out.println("\n--GET CUSTOMER BY ID--\n");
 
-                Customer customer = customerDAO.getById(askInt("Enter customer ID to search" + getBetweenText()));
+                customer = customerDAO.getCustomerById(askInt("Enter customer ID to search" + getBetweenText()));
 
                 if (customer != null) {
                     System.out.println("Customer: \n" + customer);
                 } else {
                     printGetNotFoundMessage("Customer", "ID");
                 }
+                break;
 
-            }
-            case 3 -> { // Get costumer that have the name typed
+            case 3: // Get costumer that have the name typed
                 System.out.println("\n--GET CUSTOMER BY NAME--\n");
 
-                List<Customer> customers = customerDAO.getCustomersBySimilarName(askString("Enter customer NAME to search: "));
+                List<Customer> customers = customerDAO.getAllCustomersOrderedByName();
 
                 if (!customers.isEmpty()) {
                     System.out.println("Customers: \n");
-                    for (Customer customer : customers) {
-                        System.out.println(customer);
+                    for (Customer customer1 : customers) {
+                        System.out.println(customer1);
                     }
                 } else {
                     printGetNotFoundMessage("Customers", "NAME");
                 }
+                break;
 
-            }
-
-            case 4 -> { // Delete costumer by ID
+            case 4: // Delete costumer by ID
                 System.out.println("\n--DELETE CUSTOMER BY ID--\n");
 
-                Customer customerToDelete = customerDAO.getById(askInt("Enter customer ID to delete" + getBetweenText()));
+                Customer customerToDelete = customerDAO.getCustomerById(askInt("Enter customer ID to delete" + getBetweenText()));
                 
                 if (customerToDelete != null) {
-                    List<Order> orders = orderDAO.getOrdersByCustomerIdOrderedByNumber(customerToDelete.getId());
+                    List<Orders> orders = orderDAO.getOrdersByCustomerId(customerToDelete.getId());
                     if (!orders.isEmpty()) {
-                        for (Order order : orders) {
-                            orderDAO.delete(order.getNumber());
+                        for (Orders order : orders) {
+                            orderDAO.deleteOrder(order.getNumber());
                         }
                     }
-                    customerDAO.delete(customerToDelete.getId());
+                    customerDAO.deleteCustomer(customerToDelete.getId());
                     System.out.println("Customer successfully deleted");
                 } else {
                     printGetNotFoundMessage("Customer", "ID");
                 }
-            }
+                break;
 
-            case 5 -> { // List all Customers
+            case 5: // List all Customers
                 System.out.println("\n--LISTING ALL CUSTOMERS--\n");
 
                 List<Customer> allCustomers = customerDAO.getAllCustomersOrderedByName();
 
                 if (!allCustomers.isEmpty()) {
                     System.out.println("Customers: \n");
-                    for (Customer customer : allCustomers) {
-                        System.out.println(customer);
+                    for (Customer customer1 : allCustomers) {
+                        System.out.println(customer1);
                     }
                 } else {
                     System.out.println("No customers found.");
                 }
-            }
+                break;
         }
 
         if (option != 6) { //exit
@@ -118,3 +119,4 @@ public class CustomerMenu extends MenuFuncs {
         }
     }
 }
+

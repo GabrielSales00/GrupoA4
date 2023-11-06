@@ -1,9 +1,9 @@
-package GrupoA4.Menu;
+package dataBaseReference.Menu;
 
-import DAO.AbstractCustomerDAO;
-import DAO.AbstractOrderDAO;
-import DTO.Customer;
-import DTO.Order;
+import dataBaseReference.DAO.AbstractCustomerDAO;
+import dataBaseReference.DAO.AbstractOrderDAO;
+import dataBaseReference.DTO.Customer;
+import dataBaseReference.DTO.Orders;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class OrderMenu extends MenuFuncs {
 
     // Method to display the order menu and handle selected options.
     @Override
-    public void showMenu() throws SQLException {
+    public void showMenu() {
 
         System.out.println("\nOrders actions:");
 
@@ -36,49 +36,49 @@ public class OrderMenu extends MenuFuncs {
         int option = askOption();
 
         switch (option) {
-            case 1 -> { // Add a new order to a client
+            case 1: // Add a new order to a client
                 System.out.println("\n--ADDING NEW ORDER TO CLIENT--\n");
 
-                Customer customer = customerDAO.getById(askInt("Enter customer ID for adding a order: " + getBetweenText()));
+                Customer customer = customerDAO.getCustomerById(askInt("Enter customer ID for adding a order: " + getBetweenText()));
                 
                 if (customer != null) {
-                    Order order = new Order();
+                    Orders order = new Orders();
                     order.setCustomerId(customer.getId());
                     
                     order.setNumber(askInt("Order number: " + getBetweenText()));
                     order.setPrice(askBigDecimal("Order price: "));
                     order.setDescription(askString("Order desciption: "));
 
-                    orderDAO.add(order);
+                    orderDAO.addOrder(order);
                 } else {
                     printGetNotFoundMessage("Customer", "ID");
                 }
-            }
+                break;
 
-            case 2 -> { // Get an order by number
+            case 2: // Get an order by number
                 System.out.println("\n--GET ORDER BY NUMBER--\n");
 
-                Order order = orderDAO.getById(askInt("Enter order number to search" + getBetweenText()));
+                Orders order = orderDAO.getOrderByNumber(askInt("Enter order number to search" + getBetweenText()));
 
                 if (order != null) {
-                    Customer customer = customerDAO.getById(order.getCustomerId());
+                    Customer customer = customerDAO.getCustomerById(order.getCustomerId());
                     System.out.println("Customer: \n-Id: " + customer.getId() + "\n-Name: " + customer.getName() + "\n-Order: \n" + order);
                 } else {
                     printGetNotFoundMessage("Order", "Number given");
                 }
-            }
+                break;
 
-            case 3 -> { // Delete an order
+            case 3:  // Delete an order
                 System.out.println("\n--DELETING ORDER--\n");
 
-                Order order = orderDAO.getById(askInt("Enter order number to delete: "));
+                Orders order = orderDAO.getOrderByNumber(askInt("Enter order number to delete: "));
 
                 if (order != null) {
-                    orderDAO.delete(order.getNumber());
+                    orderDAO.deleteOrder(order.getNumber());
                 } else {
                     printGetNotFoundMessage("Order", "number given");
                 }
-            }
+                break;
 
 
         }
