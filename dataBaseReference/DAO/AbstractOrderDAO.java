@@ -11,12 +11,6 @@ public abstract class AbstractOrderDAO
 
    abstract public Orders getOrderByNumber(int orderNumber) throws SQLException;
 
-   abstract public List<Orders> getAllOrdersByCustomerId(int customerId) throws SQLException;
-	
-	abstract public List<Orders> getAllOrdersByCustomerIdByNumber(int customerId) throws SQLException;
-	
-	abstract public List<Orders> getAllOrdersOrderedByNumber() throws SQLException;	
-
    abstract public void addOrder(Orders order) throws SQLException;
 
    abstract public void updateOrder(Orders order) throws SQLException;

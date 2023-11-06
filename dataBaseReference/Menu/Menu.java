@@ -59,7 +59,7 @@ public class Menu extends MenuFuncs {
                 this.showMenu();
                 break;
             case 3:
-            	new ReportMenu(this.controller).showMenu();
+            	// new ReportMenu(this.controller.getCustomerDAO(), this.controller.getOrdersDAO()).showMenu();
                 this.showMenu();
                 break;
             case 4:

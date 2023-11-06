@@ -17,7 +17,7 @@ public class ReportMenu extends MenuFuncs {
 
         public ReportMenu(Controller controller) {
 
-            this.currentDB = controller;
+            currentDB = controller;
     
             optionsMenu = new ArrayList<>();
             optionsMenu.add("1 - Clientes ordenados por identificador");
@@ -44,16 +44,21 @@ public class ReportMenu extends MenuFuncs {
                     currentDB.requestCustomerByName();
                     break;
                 case 3:
-                    currentDB.requestAllOrdersByNumber();
+                    currentDB.req
                     break;
                 case 4 :
-                    int id = askInt("Client ID: ");
-                    currentDB.requestAllOrdersByCustomerIdAndNumber(id);
+                    List<Customer> customers = customerDAO.getAllSortedByName();
+                    for (Customer customer : customers) {
+                        System.out.println(customer);
+                        List<Order> orders = orderDAO.getAllByCustomerIdSortedByNumber(customer.getId());
+                        for (Order order : orders) {
+                            System.out.println(order);
+                        }
+                    }
                     break;
-                default:
-                    System.err.println("Please type a number between 1 and 4.");
+                if (option != 5) {
                     this.showMenu();
-                
+                }
             }
         }
 }

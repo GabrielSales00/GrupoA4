@@ -38,14 +38,9 @@ public class Customer_Mem_DAO extends AbstractCustomerDAO
    @Override
    public List<Customer> getAllCustomersOrderedByName() throws SQLException
       {
-         List<Customer> customers = databaseRef.getCustomerList();
-         Collections.sort(customers, new Comparator<Customer>() {
-            @Override
-            public int compare(Customer customer1, Customer customer2) {
-               return customer1.getName().compareTo(customer2.getName());
-            }
-            });
-         return customers;
+      List<Customer> customers = new ArrayList<>();
+      customers.addAll(databaseRef.getCustomerList());
+      return customers;
       }
 
    @Override

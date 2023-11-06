@@ -203,7 +203,7 @@ public class Controller
       try {
          List<Customer> customers = customerDAO.getAllCustomersOrderedById();
          for (Customer customer : customers) {
-            System.out.println(customer);
+             System.out.println(customer);
          }
       }
       catch (SQLException e) {
@@ -214,26 +214,19 @@ public class Controller
    }
 
    public void deleteCustomerByID(int id) {
-      try {
-         Customer customerToDelete = customerDAO.getCustomerById(id);
-                  
-         if (customerToDelete != null) {
-            List<Orders> orders = ordersDAO.getOrdersByCustomerId(customerToDelete.getId());
-            if (!orders.isEmpty()) {
-               for (Orders order : orders) {
-                     ordersDAO.deleteOrder(order.getNumber());
-               }
-            }
-            customerDAO.deleteCustomer(customerToDelete.getId());
-            System.out.println("Customer successfully deleted");
-         } else {
-            System.out.println("Deleting of Costumer failed. Could not find match.");
-         }
-      }
-      catch (SQLException e) {
-         System.out.println("Exception launched. Program aborted.");
-         System.out.println(e.getMessage());
-         System.exit(1);
+      Customer customerToDelete = customerDAO.getCustomerById(askInt("Enter customer ID to delete" + getBetweenText()));
+                
+      if (customerToDelete != null) {
+          List<Orders> orders = ordersDAO.getOrdersByCustomerId(customerToDelete.getId());
+          if (!orders.isEmpty()) {
+              for (Orders order : orders) {
+                  ordersDAO.deleteOrder(order.getNumber());
+              }
+          }
+          customerDAO.deleteCustomer(customerToDelete.getId());
+          System.out.println("Customer successfully deleted");
+      } else {
+         System.out.println("Deleting of Costumer failed. Could not find match.");
       }
    }
 
@@ -243,7 +236,7 @@ public class Controller
          List<Customer> customers = customerDAO.getAllCustomersOrderedByName();
          for (Customer customer : customers)
             {
-               System.out.println(customer.getName());
+            System.out.println(customer.getName());
             }
          }
       catch (SQLException e)
@@ -254,45 +247,7 @@ public class Controller
 
 
    public void requestAllOrdersByNumber() {
-      try {
-         List<Orders> order = ordersDAO.getAllOrdersOrderedByNumber();
-         for (Orders order1 : order) {
-             System.out.println(order);
-         }
-      }
-      catch (SQLException e) {
-         System.out.println("Exception launched. Program aborted.");
-         System.out.println(e.getMessage());
-         System.exit(1);
-      }
-   }
-
-   public void requestAllOrdersByCustomerId(int id) {
-      try {
-         List<Orders> order = ordersDAO.getAllOrdersByCustomerId(id);
-         for (Orders order1 : order) {
-             System.out.println(order);
-         }
-      }
-      catch (SQLException e) {
-         System.out.println("Exception launched. Program aborted.");
-         System.out.println(e.getMessage());
-         System.exit(1);
-      }
-   }
-
-   public void requestAllOrdersByCustomerIdAndNumber(int id) {
-      try {
-         List<Orders> order = ordersDAO.getAllOrdersByCustomerIdByNumber(id);
-         for (Orders order1 : order) {
-             System.out.println(order);
-         }
-      }
-      catch (SQLException e) {
-         System.out.println("Exception launched. Program aborted.");
-         System.out.println(e.getMessage());
-         System.exit(1);
-      } 
+      
    }
 
 
