@@ -20,6 +20,24 @@ public class Customer_DB_DAO extends AbstractCustomerDAO
       }
 
    @Override
+   public List<Customer> getAllCustomersOrderedById() throws SQLException {
+	   List<Customer> customers = new ArrayList<>();
+	   String query = "SELECT * FROM Customer ORDER BY Id";
+	   try(PreparedStatement preparedStatement = connection.prepareStatement(query);
+			   ResultSet resultSet = preparedStatement.executeQuery()) {
+		   	while(resultSet.next()) {
+		   		Customer customer = new Customer();
+	            customer.setId(resultSet.getInt("id"));
+	            customer.setName(resultSet.getString("name"));
+	            customer.setCity(resultSet.getString("city"));
+	            customer.setState(resultSet.getString("state"));
+	            customers.add(customer);
+		   	}
+	   }
+	   return customers;
+   }
+
+   @Override
    public List<Customer> getAllCustomersOrderedByName() throws SQLException
       {
       List<Customer> customers = new ArrayList<>();
@@ -42,7 +60,8 @@ public class Customer_DB_DAO extends AbstractCustomerDAO
 
       return customers;
       }
-
+   
+   
    @Override
    public Customer getCustomerById(int customerId) throws SQLException
       {

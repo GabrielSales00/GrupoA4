@@ -52,12 +52,12 @@ public abstract class MenuFuncs {
     }
 
     // Prompts the user for a string input.
-    protected String askString(String message) {
+    public String askString(String message) {
         return ask(message);
     }
 
     // Prompts the user for a BigDecimal input.
-    protected BigDecimal askBigDecimal(String message) {
+    public BigDecimal askBigDecimal(String message) {
         try {
             return BigDecimal.valueOf(Long.parseLong(ask(message)));
         } catch (NumberFormatException exception) {
@@ -68,7 +68,7 @@ public abstract class MenuFuncs {
     }
 
     // Prompts the user for an integer input.
-    protected int askInt(String message) {
+    public int askInt(String message) {
         try {
             return Integer.parseInt(ask(message));
         } catch (NumberFormatException exception) {
@@ -79,7 +79,7 @@ public abstract class MenuFuncs {
     }
 
     // Prompts the user for an option and returns it as an integer.
-    protected int askOption() {
+    public int askOption() {
         try {
             return Integer.parseInt(ask("Choose an action: "));
 
@@ -91,11 +91,11 @@ public abstract class MenuFuncs {
     }
 
     // Retrieves and returns a message that indicates the available values within a specific range.
-    protected String getBetweenText() {
+    public String getBetweenText() {
         return " between [" + DAO.getAvailableRange()[0] + "] and [" + DAO.getAvailableRange()[1] + "]: ";
     }
 
-    protected void printGetNotFoundMessage(String dto, String attr) {
+    public void printGetNotFoundMessage(String dto, String attr) {
         System.out.println("No " + dto + " found with " + attr + "!");
     }
 }

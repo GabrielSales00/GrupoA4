@@ -8,7 +8,7 @@ public final class DAODataBaseDemoStart
       
       try
          {
-         (new Controller(DataBaseType.MEMORY)).start();
+
          }
       catch (Exception myException)
          {

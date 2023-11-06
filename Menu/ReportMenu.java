@@ -4,19 +4,20 @@ import dataBaseReference.DAO.AbstractCustomerDAO;
 import dataBaseReference.DAO.AbstractOrderDAO;
 import dataBaseReference.DTO.Customer;
 import dataBaseReference.DTO.Orders;
+import dataBaseReference.System.Controller;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ReportMenu extends MenuFuncs {
-        private final AbstractCustomerDAO customerDAO;
-        private final AbstractOrderDAO orderDAO;
-    
-        public ReportMenu(AbstractCustomerDAO abstractCustomerDAO, AbstractOrderDAO abstractOrderDAO) {
-            this.customerDAO = abstractCustomerDAO;
-            this.orderDAO = abstractOrderDAO;
+public class ReportMenu extends MenuFuncs {  
+
+        public Controller currentDB;
+
+        public ReportMenu(Controller controller) {
+
+            this.currentDB = controller;
     
             optionsMenu = new ArrayList<>();
             optionsMenu.add("1 - Clientes ordenados por identificador");
@@ -37,36 +38,22 @@ public class ReportMenu extends MenuFuncs {
     
             switch (option) {
                 case 1:
-                    List<Customer> customers = customerDAO.getCostumersSortedById();
-                    for (Customer customer : customers) {
-                        System.out.println(customer);
-                    }
+                    currentDB.requestAllCustomersById();
                     break;
                 case 2:
-                    List<Customer> customers = customerDAO.getAllCustomersOrderedByName();
-                    for (Customer customer : customers) {
-                        System.out.println(customer);
-                    }
+                    currentDB.requestCustomerByName();
                     break;
                 case 3:
-                    List<Orders> orders = orderDAO.getOrderByNumber();
-                    for (Orders order : orders) {
-                        System.out.println(order);
-                    }
+                    currentDB.requestAllOrdersByNumber();
                     break;
                 case 4 :
-                    List<Customer> customers = customerDAO.getAllSortedByName();
-                    for (Customer customer : customers) {
-                        System.out.println(customer);
-                        List<Order> orders = orderDAO.getAllByCustomerIdSortedByNumber(customer.getId());
-                        for (Order order : orders) {
-                            System.out.println(order);
-                        }
-                    }
+                    int id = askInt("Client ID: ");
+                    currentDB.requestAllOrdersByCustomerIdAndNumber(id);
                     break;
-                if (option != 5) {
+                default:
+                    System.err.println("Please type a number between 1 and 4.");
                     this.showMenu();
-                }
+                
             }
         }
 }

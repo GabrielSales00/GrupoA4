@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.ListIterator;
 import dataBaseReference.DTO.Orders;
 
 
@@ -18,6 +18,71 @@ public class Order_DB_DAO extends AbstractOrderDAO
       {
       super();
       this.connection = connection;
+      }
+
+   @Override
+   public List<Orders> getAllOrdersOrderedByNumber() throws SQLException {
+      List<Orders> orders = new ArrayList<>();
+      String query = "SELECT * FROM Orders ORDER BY number";
+      try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+         ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+               Orders order = new Orders();
+               order.setNumber(resultSet.getInt("number"));
+               order.setCustomerId(resultSet.getInt("customerId"));
+               order.setDescription(resultSet.getString("description"));
+               order.setPrice(resultSet.getFloat("price"));
+               orders.add(order);
+               
+            }
+      }
+      return orders;
+   }
+   
+   @Override
+   public List<Orders> getAllOrdersByCustomerIdByNumber(int customerId) throws SQLException {
+      List<Orders> orders = new ArrayList<>();
+      String query = "SELECT * FROM Orders WHERE customerId = ? ORDER BY number";
+      try(PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+         preparedStatement.setInt(1, customerId);
+         ResultSet resultSet = preparedStatement.executeQuery();
+         
+         while(resultSet.next()) {
+               Orders order = new Orders();
+               order.setNumber(resultSet.getInt("number"));
+               order.setCustomerId(resultSet.getInt("customerId"));
+               order.setDescription(resultSet.getString("description"));
+               order.setPrice(resultSet.getFloat("price"));
+               orders.add(order);
+         }
+      }
+      return orders;
+   }
+   
+   @Override
+   public List<Orders> getAllOrdersByCustomerId(int customerId) throws SQLException
+      {
+      List<Orders> orders = new ArrayList<>();
+      String query = "SELECT * FROM Orders WHERE customerId = ?";
+
+      try (PreparedStatement preparedStatement = connection.prepareStatement(query))
+         {
+         preparedStatement.setInt(1, customerId);
+         ResultSet resultSet = preparedStatement.executeQuery();
+
+         while (resultSet.next())
+            {
+            Orders order = new Orders();
+            order.setNumber(resultSet.getInt("number"));
+            order.setCustomerId(resultSet.getInt("customerId"));
+            order.setDescription(resultSet.getString("description"));
+            order.setPrice(resultSet.getFloat("price"));
+            orders.add(order);
+            }
+         }
+
+      return orders;
       }
 
    @Override

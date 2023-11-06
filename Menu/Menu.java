@@ -5,7 +5,7 @@ import dataBaseReference.System.*;
 
 
 
-public class Menu {
+public class Menu extends MenuFuncs {
     private Scanner scanner;
     public Controller controller;
 
@@ -35,8 +35,10 @@ public class Menu {
         this.controller.openConnection();
         showMenu();
     }
-
+    
+    @Override
     public void showMenu() {
+        //usar List
         System.out.println("Menu:");
         System.out.println("1. Customer Menu");        
         System.out.println("2. Order Menu");                   
@@ -49,15 +51,15 @@ public class Menu {
 
         switch (choice) {
             case 1:
-            	new CustomerMenu(this.controller.getCustomerDAO(), this.controller.getOrdersDAO()).showMenu();
+            	new CustomerMenu(this.controller).showMenu();
                 this.showMenu();
                 break;
             case 2:
-              	new OrderMenu(controller.getCustomerDAO(),controller.getOrdersDAO()).showMenu();
+              	new OrderMenu(this.controller).showMenu();
                 this.showMenu();
                 break;
             case 3:
-            	new ReportMenu(this.controller.getCustomerDAO(), this.controller.getOrdersDAO()).showMenu();
+            	new ReportMenu(this.controller).showMenu();
                 this.showMenu();
                 break;
             case 4:

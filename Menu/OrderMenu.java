@@ -1,22 +1,18 @@
 package dataBaseReference.Menu;
 
-import dataBaseReference.DAO.AbstractCustomerDAO;
-import dataBaseReference.DAO.AbstractOrderDAO;
-import dataBaseReference.DTO.Customer;
-import dataBaseReference.DTO.Orders;
+
+import dataBaseReference.System.Controller;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
+import java.math.BigDecimal;
+
 
 // The OrderMenu class extends the MenuFuncs class and implements an order menu.
 public class OrderMenu extends MenuFuncs {
-    private final AbstractCustomerDAO customerDAO;
-    private final AbstractOrderDAO orderDAO;
-
-    public OrderMenu(AbstractCustomerDAO abstractCustomerDAO, AbstractOrderDAO abstractOrderDAO) {
-        this.customerDAO = abstractCustomerDAO;
-        this.orderDAO = abstractOrderDAO;
+    Controller currentDB;
+    public OrderMenu(Controller controller) {
+        this.currentDB = controller;
 
         optionsMenu = new ArrayList<>();
         optionsMenu.add("1 - Add a new order to a client");
@@ -39,48 +35,29 @@ public class OrderMenu extends MenuFuncs {
             case 1: // Add a new order to a client
                 System.out.println("\n--ADDING NEW ORDER TO CLIENT--\n");
 
-                Customer customer = customerDAO.getCustomerById(askInt("Enter customer ID for adding a order: " + getBetweenText()));
-                
-                if (customer != null) {
-                    Orders order = new Orders();
-                    order.setCustomerId(customer.getId());
-                    
-                    order.setNumber(askInt("Order number: " + getBetweenText()));
-                    order.setPrice(askBigDecimal("Order price: "));
-                    order.setDescription(askString("Order desciption: "));
+                int id = askInt("Insert Id:");
 
-                    orderDAO.addOrder(order);
-                } else {
-                    printGetNotFoundMessage("Customer", "ID");
-                }
+                int orderNum = askInt("Order number: ");
+
+                BigDecimal orderPrice = askBigDecimal("Order price: ");
+
+                String description = askString("Order desciption: ");
+
+                currentDB.insertOrder(id, orderNum, orderPrice, description);
+
                 break;
 
             case 2: // Get an order by number
                 System.out.println("\n--GET ORDER BY NUMBER--\n");
-
-                Orders order = orderDAO.getOrderByNumber(askInt("Enter order number to search" + getBetweenText()));
-
-                if (order != null) {
-                    Customer customer = customerDAO.getCustomerById(order.getCustomerId());
-                    System.out.println("Customer: \n-Id: " + customer.getId() + "\n-Name: " + customer.getName() + "\n-Order: \n" + order);
-                } else {
-                    printGetNotFoundMessage("Order", "Number given");
-                }
+                int number = askInt("Enter order number to search");
+                currentDB.insertOrderByNumber(number);
                 break;
 
             case 3:  // Delete an order
                 System.out.println("\n--DELETING ORDER--\n");
-
-                Orders order = orderDAO.getOrderByNumber(askInt("Enter order number to delete: "));
-
-                if (order != null) {
-                    orderDAO.deleteOrder(order.getNumber());
-                } else {
-                    printGetNotFoundMessage("Order", "number given");
-                }
+                int num = askInt("Enter order number to delete: ");
+                currentDB.deleteOrder(num);
                 break;
-
-
         }
         if (option != 4) { // Exit
             this.showMenu();
