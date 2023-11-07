@@ -92,7 +92,7 @@ public abstract class MenuFuncs {
 
     // Retrieves and returns a message that indicates the available values within a specific range.
     public String getBetweenText() {
-        return " between [" + DAO.getAvailableRange()[0] + "] and [" + DAO.getAvailableRange()[1] + "]: ";
+        return " between [" + 0 + "] and [" + 100000 + "]: ";
     }
 
     public void printGetNotFoundMessage(String dto, String attr) {

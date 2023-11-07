@@ -39,19 +39,25 @@ public class ReportMenu extends MenuFuncs {
             switch (option) {
                 case 1:
                     currentDB.requestAllCustomersById();
+                    this.showMenu();
                     break;
                 case 2:
                     currentDB.requestCustomerByName();
+                    this.showMenu();
                     break;
                 case 3:
                     currentDB.requestAllOrdersByNumber();
+                    this.showMenu();
                     break;
                 case 4 :
                     int id = askInt("Client ID: ");
                     currentDB.requestAllOrdersByCustomerIdAndNumber(id);
+                    this.showMenu();
+                    break;
+                case 5:
                     break;
                 default:
-                    System.err.println("Please type a number between 1 and 4.");
+                    System.err.println("Please type a number between 1 and 5.");
                     this.showMenu();
                 
             }

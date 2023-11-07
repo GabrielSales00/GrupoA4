@@ -32,7 +32,7 @@ public class Order_DB_DAO extends AbstractOrderDAO
                order.setNumber(resultSet.getInt("number"));
                order.setCustomerId(resultSet.getInt("customerId"));
                order.setDescription(resultSet.getString("description"));
-               order.setPrice(resultSet.getFloat("price"));
+               order.setPrice(resultSet.getBigDecimal("price"));
                orders.add(order);
                
             }
@@ -53,7 +53,7 @@ public class Order_DB_DAO extends AbstractOrderDAO
                order.setNumber(resultSet.getInt("number"));
                order.setCustomerId(resultSet.getInt("customerId"));
                order.setDescription(resultSet.getString("description"));
-               order.setPrice(resultSet.getFloat("price"));
+               order.setPrice(resultSet.getBigDecimal("price"));
                orders.add(order);
          }
       }
@@ -77,7 +77,7 @@ public class Order_DB_DAO extends AbstractOrderDAO
             order.setNumber(resultSet.getInt("number"));
             order.setCustomerId(resultSet.getInt("customerId"));
             order.setDescription(resultSet.getString("description"));
-            order.setPrice(resultSet.getFloat("price"));
+            order.setPrice(resultSet.getBigDecimal("price"));
             orders.add(order);
             }
          }
